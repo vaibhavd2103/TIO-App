@@ -56,7 +56,8 @@ const AppNavigator = () => {
 
 const Tab = createBottomTabNavigator();
 
-function BottomTab() {
+function BottomTab(props) {
+  const [selected, setSelected] = useState("");
   const refRBSheet = useRef();
   return (
     <>
@@ -88,7 +89,15 @@ function BottomTab() {
           component={HomeStackNav}
           options={{
             tabBarIcon: ({ color }) => (
-              <SimpleLineIcons name="home" size={24} color={color} />
+              <SimpleLineIcons
+                name="home"
+                size={24}
+                color={selected === "home" ? "#4585FF" : "#A2A9B8"}
+                onPress={() => {
+                  props.navigation.navigate("Home");
+                  setSelected("home");
+                }}
+              />
             ),
           }}
         />
@@ -102,7 +111,10 @@ function BottomTab() {
                 <>
                   <TouchableOpacity
                     activeOpacity={1}
-                    onPress={() => refRBSheet.current.open()}
+                    onPress={() => {
+                      setSelected("add");
+                      refRBSheet.current.open();
+                    }}
                   >
                     <View
                       style={{
@@ -124,7 +136,7 @@ function BottomTab() {
                       <AntDesign
                         name="plus"
                         size={24}
-                        color={focused ? color : "grey"}
+                        color={selected === "add" ? "#4585FF" : "#A2A9B8"}
                       />
                     </View>
 
@@ -164,7 +176,15 @@ function BottomTab() {
           component={Search}
           options={{
             tabBarIcon: ({ color }) => (
-              <AntDesign name="search1" size={24} color={color} />
+              <AntDesign
+                name="search1"
+                size={24}
+                color={selected === "search" ? "#4585FF" : "#A2A9B8"}
+                onPress={() => {
+                  props.navigation.navigate("Search");
+                  setSelected("search");
+                }}
+              />
             ),
           }}
         />
@@ -225,6 +245,8 @@ function HomeStackNav() {
 }
 
 function MsgNotificationStack(props) {
+  const [selected, setSelected] = useState("");
+
   const [numMessage, setNumMessage] = useState("2");
   return (
     <>
@@ -279,9 +301,16 @@ function MsgNotificationStack(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onPress={() => props.navigation.navigate("Notifications")}
+            onPress={() => {
+              setSelected("bell");
+              props.navigation.navigate("Notifications");
+            }}
           >
-            <FontAwesome name="bell-o" size={26} color="white" />
+            <FontAwesome
+              name="bell-o"
+              size={26}
+              color={selected === "bell" ? "#4585FF" : "#A2A9B8"}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -290,9 +319,16 @@ function MsgNotificationStack(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onPress={() => props.navigation.navigate("Messages")}
+            onPress={() => {
+              setSelected("mail");
+              props.navigation.navigate("Messages");
+            }}
           >
-            <Ionicons name="mail-open-outline" size={32} color="white" />
+            <Ionicons
+              name="mail-open-outline"
+              size={32}
+              color={selected === "mail" ? "#4585FF" : "#A2A9B8"}
+            />
             <View
               style={{
                 backgroundColor: "#ED4747",
